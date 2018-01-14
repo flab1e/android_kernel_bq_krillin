@@ -36,15 +36,6 @@ enum {
 	BINDER_TYPE_PTR		= B_PACK_CHARS('p', 't', '*', B_TYPE_LARGE),
 };
 
-/**
- * enum flat_binder_object_shifts: shift values for flat_binder_object_flags
- * @FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT: shift for getting scheduler policy.
- *
- */
-enum flat_binder_object_shifts {
-	FLAT_BINDER_FLAG_SCHED_POLICY_SHIFT = 9,
-};
-
 enum {
 	FLAT_BINDER_FLAG_PRIORITY_MASK = 0xff,
 	FLAT_BINDER_FLAG_ACCEPTS_FDS = 0x100,
@@ -140,6 +131,7 @@ enum {
 
 /* struct binder_fd_array_object - object describing an array of fds in a buffer
  * @hdr:		common header structure
+ * @pad:		padding to ensure correct alignment
  * @num_fds:		number of file descriptors in the buffer
  * @parent:		index in offset array to buffer holding the fd array
  * @parent_offset:	start offset of fd array in the buffer
@@ -160,6 +152,7 @@ enum {
  */
 struct binder_fd_array_object {
 	struct binder_object_header	hdr;
+	__u32				pad;
 	binder_size_t			num_fds;
 	binder_size_t			parent;
 	binder_size_t			parent_offset;
@@ -193,11 +186,11 @@ struct binder_version {
 #endif
 
 #define BINDER_WRITE_READ		_IOWR('b', 1, struct binder_write_read)
-#define		BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
-#define		BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
-#define 	BINDER_SET_IDLE_PRIORITY	_IOW('b', 6, __s32)
-#define 	BINDER_SET_CONTEXT_MGR		_IOW('b', 7, __s32)
-#define 	BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
+#define	BINDER_SET_IDLE_TIMEOUT		_IOW('b', 3, __s64)
+#define	BINDER_SET_MAX_THREADS		_IOW('b', 5, __u32)
+#define	BINDER_SET_IDLE_PRIORITY	_IOW('b', 6, __s32)
+#define	BINDER_SET_CONTEXT_MGR		_IOW('b', 7, __s32)
+#define	BINDER_THREAD_EXIT		_IOW('b', 8, __s32)
 #define BINDER_VERSION			_IOWR('b', 9, struct binder_version)
 
 /*
@@ -227,10 +220,8 @@ struct binder_transaction_data {
 	 * identifying the target and contents of the transaction.
 	 */
 	union {
-		/* target descriptor of command transaction */
-		__u32	handle;
-		/* target descriptor of return transaction */
-		binder_uintptr_t ptr;
+		__u32	handle;	/* target descriptor of command transaction */
+		binder_uintptr_t ptr;	/* target descriptor of return transaction */
 	} target;
 	binder_uintptr_t	cookie;	/* target object cookie */
 	__u32		code;		/* transaction command */
@@ -270,7 +261,7 @@ struct binder_ptr_cookie {
 struct binder_handle_cookie {
 	__u32 handle;
 	binder_uintptr_t cookie;
-} __packed;
+} __attribute__((packed));
 
 struct binder_pri_desc {
 	__s32 priority;
@@ -434,7 +425,7 @@ enum binder_driver_command_protocol {
 	 * void *: cookie
 	 */
 
- 	BC_CLEAR_DEATH_NOTIFICATION = _IOW('c', 15, struct binder_handle_cookie),
+	BC_CLEAR_DEATH_NOTIFICATION = _IOW('c', 15, struct binder_handle_cookie),
 	/*
 	 * int: handle
 	 * void *: cookie
