@@ -44,6 +44,8 @@
    * ANDR7E ( help with kpd buttons + device info app for mtk devices) ---- XDA, 4PDA, GITHUB
    * @assusdan help me with drivers and develop the kernel. ---- 4PDA, GITHUB
    * BQ for his sources (LCM DRVIERS, TOUCH DRIVERS, ETC) ---- GITHUB
+   * MagnusALM for fix some bugs ---- GITHUB
+   * Pablito2020 for his very big work on this device ---- HTCMania, XDA, 4PDA, GITHUB
    * Vineeth Raj for his dt2wake and sweep2wake commits for sprout. ---- GITHUB
    * Varun Chitre for his "thunder" drivers for sprout. ---- GITHUB
    * @zormax for the bring up LP/MM project ---- 4PDA
